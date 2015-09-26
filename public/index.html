@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Interfeud Watson</title>
+    <link href="css/watson-bootstrap-style.css" rel="stylesheet">
+    <link href="css/browser-compatibility.css" rel="stylesheet">
+    <link href="css/demo-tts.css" rel="stylesheet">
+    <link href="css/chrome-web-speech.css" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico" />
+  </head>
+  <body>
+
+    <!-- top nav section -->
+    <div class="navbar-wrapper">
+
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+          <!-- IBM Watson Logo -->
+          <div class="navbar-header">
+            <span class="navbar-brand no-underline" href="http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/"><span class="thin-branding">IBM Watson</span> for Fullstack Academy</span>
+          </div>
+          <div class="float-right">
+            <ul class="nav navbar-nav">
+              <!--
+              <li><a href="http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/services-catalog.html" class="no-underline">Services</a></li>
+              -->
+            </ul>
+          </div><!-- .navbar right-->
+        </div><!-- .container -->
+      </div><!-- .navbar -->
+
+    </div><!-- .navbar-wrapper -->
+
+    <!-- Chrome Web Speech -->
+    <h1 class="center" id="headline">
+      Watson is ready to take your question.
+    </h1>
+    <div id="info">
+      <p id="info_start">Click on the microphone icon and begin speaking.</p>
+      <p id="info_speak_now">Speak now.</p>
+      <p id="info_no_speech">No speech was detected. You may need to adjust your
+        <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
+          microphone settings</a>.</p>
+      <p id="info_no_microphone" style="display:none">
+        No microphone was found. Ensure that a microphone is installed and that
+        <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
+        microphone settings</a> are configured correctly.</p>
+      <p id="info_allow">Click the "Allow" button above to enable your microphone.</p>
+      <p id="info_denied">Permission to use microphone was denied.</p>
+      <p id="info_blocked">Permission to use microphone is blocked. To change,
+        go to chrome://settings/contentExceptions#media-stream</p>
+      <p id="info_upgrade">Web Speech API is not supported by this browser.
+         Upgrade to <a href="//www.google.com/chrome">Chrome</a>
+         version 25 or later.</p>
+    </div>
+    <div class="right">
+      <button id="start_button" onclick="startButton(event)">
+        <img id="start_img" src="/images/mic.gif" alt="Start"></button>
+    </div>
+    <div id="results">
+      <span id="final_span" class="final"></span>
+      <span id="interim_span" class="interim"></span>
+      <p>
+    </div>
+    <div class="center">
+        <button id="watson_button" class="button" onclick="watsonButton()">
+          Ask Watson
+        </button>
+        <div id="watson_info" class="info">
+          Watson is thinking about it.<br>
+          He will get back to you promptly.
+        </div>
+      <p>
+    </div>
+    <!-- End of Chrome Web Speech -->
+
+    <!-- main content-->
+    <div class="container"> 
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          <div class="audioParent">
+            <audio class="audio" controls>
+            Your browser does not support the audio element.
+            </audio>
+          </div>
+        </div>
+      </div><!-- row -->
+
+    </div><!-- /.container -->
+
+    <!-- js files -->
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.3.min.js"><\/script>')</script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script> (typeof $().emulateTransitionEnd == 'function')|| document.write('<script src="js/bootstrap-3.3.5.min.js"><\/script>')</script>
+    <script src="js/css_browser_selector.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/speechsynthesis.js"></script>
+    <script src="js/demo.js"></script>
+    <script src="js/chrome-web-speech.js"></script>
+
+  </body>
+
+</html>
