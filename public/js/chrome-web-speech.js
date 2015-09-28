@@ -7,6 +7,12 @@ var recognizing = false;
 var ignore_onend;
 var start_timestamp;
 
+var audio = $('.audio').get(0);
+$("audio").bind('playing', function() {
+   showButtons('inline-block');
+   showSpinner('none');
+ });
+
 if (!('webkitSpeechRecognition' in window)) {
     upgrade();
 } else {
@@ -17,6 +23,7 @@ if (!('webkitSpeechRecognition' in window)) {
     recognition.onstart = function() {
         recognizing = true;
         showInfo('info_speak_now');
+        audio.pause();
         start_img.src = '/images/mic-animate.gif';
     };
     recognition.onerror = function(event) {
@@ -56,10 +63,6 @@ if (!('webkitSpeechRecognition' in window)) {
             range.selectNode(document.getElementById('final_span'));
             window.getSelection().addRange(range);
         }
-        // if (create_email) {
-        //     create_email = false;
-        //     createEmail();
-        // }
         if (ask_watson) {
             ask_watson = false;
             askWatson();
@@ -112,10 +115,9 @@ function createEmail() {
 }
 
 function askWatson() {
-    watson_button.style.display = 'none';
-    current_style = 'none';
-    watson_info.style.display = 'inline-block';
-    //showInfo('');
+    showButtons('none');
+    showSpinner('inline-block');
+    showInfo('');
 
     var text = final_transcript;
     
@@ -124,7 +126,6 @@ function askWatson() {
       '?voice=en-US_MichaelVoice&text=' + encodeURIComponent(text) +
       '&X-WDC-PL-OPT-OUT=' +  sessionPermissions;
 
-    var audio = $('.audio').get(0);
     audio.pause();
     try {
       audio.currentTime = 0;
@@ -133,7 +134,6 @@ function askWatson() {
     }
     audio.src = downloadURL;
     audio.play();
-    showButtons('inline-block');
     return true;
 }
 
@@ -153,7 +153,7 @@ function startButton(event) {
         return;
     }
     final_transcript = '';
-    recognition.lang = 'en-US'; // select_dialect.value;
+    recognition.lang = 'en-US'; 
     recognition.start();
     ignore_onend = false;
     final_span.innerHTML = '';
@@ -184,5 +184,13 @@ function showButtons(style) {
     }
     current_style = style;
     watson_button.style.display = style;
-    watson_info.style.display = 'none';
+}
+
+var current_spinner;
+function showSpinner(style) {
+    if (style == current_style) {
+        return;
+    }
+    current_spinner = style;
+    watson_info.style.display = style;
 }

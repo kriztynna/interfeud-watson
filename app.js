@@ -23,14 +23,7 @@ var express    = require('express'),
   watson       = require('watson-developer-cloud'),
   extend       = require('util')._extend;
 
-var http = require('http');
-var zlib = require('zlib');
-var JSONStream = require('JSONStream');
-var stream = require('stream');
-var Transform = stream.Transform;
-var concatStream = require('concat-stream');
 var request = require('request');
-var parseString = require('xml2js').parseString;
 
 // For local development, put username and password in config
 // or store in your environment
@@ -63,8 +56,6 @@ app.get('/token', function(req, res) {
     res.send(token);
   });
 });
-
-
 
 app.get('/ask',function(req,res){
   var url = "https://interfeud-watson.herokuapp.com/ask?text="+req.query.text;

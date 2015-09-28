@@ -74,7 +74,6 @@ $(document).ready(function() {
     } catch(ex) {
       // ignore. Firefox just freaks out here for no apparent reason.
     }
-    console.log(downloadURL);
     audio.src = downloadURL;
     audio.play();
     return true;
