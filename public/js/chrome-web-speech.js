@@ -120,7 +120,7 @@ function askWatson() {
     var text = final_transcript;
     
     var sessionPermissions = JSON.parse(localStorage.getItem('sessionPermissions')) ? 0 : 1;
-    var downloadURL = '/synthesize' +
+    var downloadURL = '/ask' +
       '?voice=en-US_MichaelVoice&text=' + encodeURIComponent(text) +
       '&X-WDC-PL-OPT-OUT=' +  sessionPermissions;
 

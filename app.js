@@ -64,61 +64,24 @@ app.get('/token', function(req, res) {
   });
 });
 
-app.get('/wolfram',function(req,res){
-  var url = "http://api.wolframalpha.com/v2/query?appid=2RJAHW-R93UGR5HW4&format=plaintext&input="+req.query.question;
+
+
+app.get('/ask',function(req,res){
+  var url = "https://interfeud-watson.herokuapp.com/ask?text="+req.query.text;
   
   request.get(url,function(err, response, body) {
-    
-    parseString(body, function (err, result) {
-      var answer;
 
-      result.queryresult.pod.forEach(function (p){
-        if (p["$"].title==="Definition") {
-          answer = p.subpod[0].plaintext[0].split("|")[1];
-          
-          var transcript = textToSpeech.synthesize({"text": answer, "voice": req.query.voice});
-          transcript.on('response', function(response) {
-            if (req.query.download) {
-              response.headers['content-disposition'] = 'attachment; filename=transcript.ogg';
-            }
-          });
-          transcript.on('error', function(error) {
-            console.log('Synthesize error: ', error);
-          });
-          transcript.pipe(res);
-        }
-
-        else {
-          console.log(p["$"].title,"was not Definition");
-        }
-
-      });
-
+    var transcript = textToSpeech.synthesize({"text": body, "voice": req.query.voice});
+    transcript.on('response', function(response) {
+      if (req.query.download) {
+        response.headers['content-disposition'] = 'attachment; filename=transcript.ogg';
+      }
     });
+    transcript.on('error', function(error) {
+      console.log('Synthesize error: ', error)
+    });
+    transcript.pipe(res);
 
-  });
-
-});
-
-app.get('/stackexchange',function(req,res){
-  var url = 'http://api.stackexchange.com/2.2/search?order=desc&sort=activity&site=stackoverflow&intitle='+req.query.question;
-  var unzip = zlib.createGunzip();
-  var JSONParse = JSONStream.parse("*"); 
-  var JSONStringify = JSONStream.stringify();
-  var filterForAnswers = new Transform();
-  filterForAnswers._transform = function (chunk, encoding, next) {
-    console.log(chunk.toString());
-    if (chunk.is_answered) this.push(chunk.toString());
-    next();
-  };
-
-  console.log(url);
-  
-  request.get(url,function(err, response){
-    console.log('hi');
-    //response.pipe(unzip).pipe(JSONParse).pipe(filterForAnswers).pipe(JSONStringify).pipe(res);
-    console.log(response.body);
-    res.send(response.body);
   });
 
 });
