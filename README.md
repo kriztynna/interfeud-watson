@@ -1,103 +1,29 @@
-# Text to Speech Nodejs Starter Application
 
-  The IBM Watson [Text to Speech][service_url] service is designed for streaming, low latency, synthesis of audio from text. It is the inverse of the automatic speech recognition. The TTS service can be accessed via a REST interface or directly via TCP.
+# Interfeud Watson
+Remember that time an AI [won Jeopardy][Watson_Jeopardy]? Interfeud Watson was inspired by IBM Watson's run on Jeopardy, but adapted for a game played at [Fullstack Academy][Fullstack_Academy] where teams answer technical interview questions. Go ask him some questions now at [interfeud-watson.mybluemix.net][Interfeud_Watson]!
 
-Give it a try! Click the button below to fork into IBM DevOps Services and deploy your own copy of this application on Bluemix.
+## Platform
+Interfeud Watson is hosted on IBM's Bluemix platform, through which we can connect to any of a number of interesting [Watson Services][Watson_Services]. We're using the [Text-to-Speech][https://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/text-to-speech.html] service to give our Watson a voice, the same voice he has on Jeopardy!
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/watson-developer-cloud/text-to-speech-nodejs)
+For the reverse, speech-to-text, this app also makes use of the Chrome Web Speech API. Although IBM Watson has its own speech-to-text service, I found the [Chrome Web Speech API][Chrome_Web_Speech_API] to work better.
 
-## Getting Started
+## Sources
+To build this project, I needed to learn to use the Watson Text-to-Speech service and the Web Speech API. I used starter applications to get a feel for how they worked and to get things off the ground. I recommend these two:
+* [IBM Text-to-Speech Node.js Starter Application][Text-to-Speech-Starter]
+* [Chrome Web Speech API demo][Chrome-Web-Speech-Starter]
 
-1. Create a Bluemix Account
-
-    [Sign up][sign_up] in Bluemix, or use an existing account. Watson Services in Beta are free to use.
-
-2. Download and install the [Cloud-foundry CLI][cloud_foundry] tool
-
-3. Edit the `manifest.yml` file and change the `<application-name>` to something unique.
-  ```none
-  applications:
-  - services:
-    - text-to-speech-service
-    name: <application-name>
-    command: node app.js
-    path: .
-    memory: 256M
-  ```
-  The name you use will determinate your application url initially, e.g. `<application-name>.mybluemix.net`.
-
-4. Connect to Bluemix in the command line tool.
-  ```sh
-  $ cf api https://api.ng.bluemix.net
-  $ cf login -u <your user ID>
-  ```
-
-5. Create the Text to Speech service in Bluemix.
-  ```sh
-  $ cf create-service text_to_speech standard text-to-speech-service
-  ```
-
-6. Push it live!
-  ```sh
-  $ cf push
-  ```
+## Screenshot
+![Interfeud Watson](https://raw.githubusercontent.com/kriztynna/interfeud-watson/master/public/images/InterfeudWatsonScreenshot1.png)
 
 
-## Running locally
-  The application uses [Node.js](http://nodejs.org/) and [npm](https://www.npmjs.com/) so you will have to download and install them as part of the steps below.
-
-1. Copy the credentials from your `text-to-speech-service` service in Bluemix to `app.js`, you can see the credentials using:
-
-    ```sh
-    $ cf env <application-name>
-    ```
-    Example output:
-    ```sh
-    System-Provided:
-    {
-    "VCAP_SERVICES": {
-      "text_to_speech": [{
-          "credentials": {
-            "url": "<url>",
-            "password": "<password>",
-            "username": "<username>"
-          },
-        "label": "text_to_speech",
-        "name": "text-to-speech-service",
-        "plan": "free"
-     }]
-    }
-    }
-    ```
-
-    You need to copy `username`, `password` and `url`.
-
-2. Install [Node.js](http://nodejs.org/)
-3. Go to the project folder in a terminal and run:
-    `npm install`
-4. Start the application
-5.  `node app.js`
-6. Go to `http://localhost:3000`
-
-## Troubleshooting
-
-To troubleshoot your Bluemix app the main useful source of information are the logs, to see them, run:
-
-  ```sh
-  $ cf logs <application-name> --recent
-  ```
-
-## License
-
-  This sample code is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE).
-
-## Contributing
-
-  See [CONTRIBUTING](CONTRIBUTING.md).
-
-## Open Source @ IBM
-  Find more open source projects on the [IBM Github Page](http://ibm.github.io/)
-
+[Chrome-Web-Speech-Starter]: https://github.com/GoogleChrome/webplatform-samples/tree/master/webspeechdemo
+[Chrome_Web_Speech_API]: https://developers.google.com/web/updates/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API?hl=en
+[Text-to-Speech-Starter]: https://github.com/watson-developer-cloud/text-to-speech-nodejs
+[Text-to-Speech]: https://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/text-to-speech.html
+[Watson_Services]: https://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud
+[Interfeud_Watson]: https://interfeud-watson.mybluemix.net
+[Fullstack_Academy]: http://www.fullstackacademy.com
+[Watson_Jeopardy]: https://youtu.be/P18EdAKuC1U?t=1m23s
 [service_url]: http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/text-to-speech.html
 [cloud_foundry]: https://github.com/cloudfoundry/cli
 [sign_up]: https://apps.admin.ibmcloud.com/manage/trial/bluemix.html?cm_mmc=WatsonDeveloperCloud-_-LandingSiteGetStarted-_-x-_-CreateAnAccountOnBluemixCLI
