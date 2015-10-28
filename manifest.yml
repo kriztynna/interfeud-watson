@@ -11,6 +11,6 @@ applications:
   - Text-to-Speech-GA
   - speech-to-text-service
   name: interfeud-watson
-  command: node app.js
+  command: node main.js
   path: .
   memory: 256M

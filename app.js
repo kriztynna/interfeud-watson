@@ -16,14 +16,20 @@
 
 'use strict';
 
-var express    = require('express'),
-  app          = express(),
-  errorhandler = require('errorhandler'),
-  bluemix      = require('./config/bluemix'),
-  watson       = require('watson-developer-cloud'),
-  extend       = require('util')._extend;
+var express    = require('express');
+var app          = express();
+var errorhandler = require('errorhandler');
+var bluemix      = require('./config/bluemix');
+var watson       = require('watson-developer-cloud');
+var extend       = require('util')._extend;
 
 var request = require('request');
+
+var parseString = require('xml2js').parseString;
+var mongoose = require('mongoose');
+var Question = mongoose.model('Question');
+
+module.exports = app;
 
 // For local development, put username and password in config
 // or store in your environment
@@ -42,6 +48,32 @@ var credentials = extend(credentialsBackup, bluemix.getServiceCreds('text_to_spe
 var textToSpeech = watson.text_to_speech(credentials);
 var authorization = watson.authorization(credentials);
 
+function parseWolfram (xmlResponse, callback) {
+  var answer;
+  parseString(xmlResponse, function (err, result) {
+    if (result.queryresult.pod) {
+      result.queryresult.pod.some(function (p){
+        if (p["$"].title==="Result" || p["$"].title==="Current result") {
+          answer = p.subpod[0].plaintext[0].split("_")[0];
+          return true; 
+        }
+        if (p["$"].title==="Definition") {
+          answer = p.subpod[0].plaintext[0].split("|")[1];
+          return true; 
+        }
+        if (p["$"].title==="Definitions") {
+          answer = p.subpod[0].plaintext[0].split("|")[2].slice(0,-2);
+          return true; 
+        }if (p["$"].title==="Response") {
+          answer = p.subpod[0].plaintext[0];
+          return true; 
+        }
+      });
+    } 
+    callback(answer);
+  });
+};
+
 // Setup static public directory
 app.use(express.static('./public'));
 
@@ -49,7 +81,7 @@ app.use(express.static('./public'));
 app.get('/token', function(req, res) {
   authorization.getToken({url: credentials.url}, function(err, token) {
     if (err) {
-      console.log('error:', err);
+      console.error('error:', err);
       res.status(err.code);
     }
 
@@ -57,50 +89,57 @@ app.get('/token', function(req, res) {
   });
 });
 
-app.get('/ask',function(req,res){
-  var url = "https://interfeud-watson.herokuapp.com/ask?text="+req.query.text;
-  
-  request.get(url,function(err, response, body) {
-
-    var transcript = textToSpeech.synthesize({"text": body, "voice": req.query.voice});
-    transcript.on('response', function(response) {
-      if (req.query.download) {
-        response.headers['content-disposition'] = 'attachment; filename=transcript.ogg';
+app.get('/ask',function (req, res, next) {
+  req.question = decodeURIComponent(req.query.text);
+  Question.findOne({"question": req.question})
+    .then(function(q) {
+      // if the question has been recorded and an answer is known, respond with the answer
+      if (q && q.answer) {
+        var transcript = textToSpeech.synthesize({"text": q.answer, "voice": req.query.voice});
+        transcript.on('error', function (error) {
+          res.status(500).send(error);
+        });
+        transcript.pipe(res);
+      } 
+      else {
+        // if the question not been recorded, add it to the db before moving on
+        if (!q) Question.create({"question": req.question}).then( function () {next(); } );
+        else next();
       }
     });
-    transcript.on('error', function(error) {
-      console.log('Synthesize error: ', error)
-    });
-    transcript.pipe(res);
-
-  });
-
 });
 
-app.get('/synthesize', function(req, res) {
-  var transcript = textToSpeech.synthesize(req.query);
-  transcript.on('response', function(response) {
-    if (req.query.download) {
-      response.headers['content-disposition'] = 'attachment; filename=transcript.ogg';
-    }
-  });
-  transcript.on('error', function(error) {
-    console.log('Synthesize error: ', error)
-  });
-  transcript.pipe(res);
-});
+app.get('/ask',function (req,res,next){
+  var url = "http://api.wolframalpha.com/v2/query?appid=2RJAHW-R93UGR5HW4&format=plaintext&input="+req.question;
+  request.get(url, function(err, response, body) {
+    parseWolfram(body, function (answer) {
+      if (answer) {
+        var transcript = textToSpeech.synthesize({"text": answer, "voice": req.query.voice});
+        transcript.on('error', function (error) {
+          res.status(500).send(error);
+        });
+        transcript.pipe(res); 
+      }
+      else {
+        next();
+      }
+    }); // parse wolfram
 
+  }); // request.get
+
+}); // app.get
+
+app.get('/ask',function(req,res){
+  var answer = "I heard you ask "+req.question+". I don't know the answer to that question."; 
+  var transcript = textToSpeech.synthesize({"text": answer, "voice": req.query.voice});
+  transcript.on('error', function (error) {
+    res.status(500).send(error);
+  });
+  transcript.pipe(res); 
+});
 
 // Add error handling in dev
 if (!process.env.VCAP_SERVICES) {
   app.use(errorhandler());
 }
-
-var port = process.env.VCAP_APP_PORT || 3000;
-app.listen(port);
-
-console.log('listening at:', port);
-
-
-
 
