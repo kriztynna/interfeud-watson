@@ -12,6 +12,19 @@ To build this project, I needed to learn to use the Watson Text-to-Speech servic
 * [IBM Text-to-Speech Node.js Starter Application][Text-to-Speech-Starter]
 * [Chrome Web Speech API demo][Chrome-Web-Speech-Starter]
 
+## Sample questions
+Not sure what you'd like to ask or say of Watson? Here are a few ideas:
+* Hello _(that's just being polite!)_
+* What is partial application?
+* What is scope?
+
+Now that you've broken the ice, try these computational questions. Insert your own number where you see x.
+* How many bits are in _x_ Megabytes? 
+* What is _x_ in binary? (, or ternary, or hexadecimal...)
+* What is the square root of _x_?
+
+Watson also knows a few good computer science joke. Ask him to tell you one of those before you leave.
+
 ## Screenshot
 ![Interfeud Watson](https://raw.githubusercontent.com/kriztynna/interfeud-watson/master/public/images/InterfeudWatsonScreenshot.png)
 
