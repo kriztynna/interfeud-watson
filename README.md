@@ -15,7 +15,6 @@ To build this project, I needed to learn to use the Watson Text-to-Speech servic
 ## Screenshot
 ![Interfeud Watson](https://raw.githubusercontent.com/kriztynna/interfeud-watson/master/public/images/InterfeudWatsonScreenshot.png)
 
-
 [Chrome-Web-Speech-Starter]: https://github.com/GoogleChrome/webplatform-samples/tree/master/webspeechdemo
 [Chrome_Web_Speech_API]: https://developers.google.com/web/updates/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API?hl=en
 [Text-to-Speech-Starter]: https://github.com/watson-developer-cloud/text-to-speech-nodejs
