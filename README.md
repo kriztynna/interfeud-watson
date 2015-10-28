@@ -3,7 +3,7 @@
 Remember that time an AI [won Jeopardy][Watson_Jeopardy]? Interfeud Watson was inspired by IBM Watson's run on Jeopardy, but adapted for a game played at [Fullstack Academy][Fullstack_Academy] where teams answer technical interview questions. Go ask him some questions now at [interfeud-watson.mybluemix.net][Interfeud_Watson]!
 
 ## Platform
-Interfeud Watson is hosted on IBM's Bluemix platform, through which we can connect to any of a number of interesting [Watson Services][Watson_Services]. We're using the [Text-to-Speech][https://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/text-to-speech.html] service to give our Watson a voice, the same voice he has on Jeopardy!
+Interfeud Watson is hosted on IBM's Bluemix platform, through which we can connect to any of a number of interesting [Watson Services][Watson_Services]. We're using the [Text-to-Speech][Text-to-Speech] service to give our Watson a voice, the same voice he has on Jeopardy!
 
 For the reverse, speech-to-text, this app also makes use of the Chrome Web Speech API. Although IBM Watson has its own speech-to-text service, I found the [Chrome Web Speech API][Chrome_Web_Speech_API] to work better.
 
@@ -20,10 +20,10 @@ Not sure what you'd like to ask or say of Watson? Here are a few ideas:
 
 Now that you've broken the ice, try these computational questions. Insert your own number where you see x.
 * How many bits are in _x_ Megabytes? 
-* What is _x_ in binary? (, or ternary, or hexadecimal...)
+* What is _x_ in binary? (or ternary, or hexadecimal...)
 * What is the square root of _x_?
 
-Watson also knows a few good computer science joke. Ask him to tell you one of those before you leave.
+Watson also knows a few good computer science jokes. Ask him to tell you one of those before you leave.
 
 ## Screenshot
 ![Interfeud Watson](https://raw.githubusercontent.com/kriztynna/interfeud-watson/master/public/images/InterfeudWatsonScreenshot.png)
